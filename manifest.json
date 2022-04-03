@@ -1,0 +1,22 @@
+{
+
+    "manifest_version": 2,
+    "name": "FireFoxMailExtension",
+    "version": "1.0",
+  
+    "description": "Encrypts and digitally signs an email.",
+  
+    "icons": {
+        "48": "icons/fill-sign.png",
+        "96": "icons/border-96.png"
+    },
+  
+  
+    "content_scripts": [
+      {
+        "matches": ["*://*.mozilla.org/*"],
+        "js": ["extensionScript.js"]
+      }
+    ]
+  
+  }
