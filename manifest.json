@@ -7,9 +7,22 @@
     "description": "Encrypts and digitally signs an email.",
   
     "icons": {
-        "48": "icons/fill-sign.png",
-        "96": "icons/border-96.png"
+        "48": "icons/fill-sign.png"
     },
+
+    "permissions": [
+      "activeTab"
+    ],
+
+    "browser_action": {
+      "default_icon": "icons/fill-sign.png",
+      "default_title": "SignMe",
+      "default_popup": "popup/popupWindow.html"
+    },
+
+    "web_accessible_resources": [
+      "icons/fill-sign.png"
+    ],
   
   
     "content_scripts": [
