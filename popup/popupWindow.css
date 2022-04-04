@@ -32,11 +32,10 @@ table {
     border-collapse: collapse;
     width: 100%;
     color: white;
-
 }
 
 thead {
-    background-color: var(--primary-color);
+    background-color:black;
     
 }
 
