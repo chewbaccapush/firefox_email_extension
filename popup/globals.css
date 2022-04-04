@@ -1,0 +1,51 @@
+@font-face {
+    font-family: "Neusa";
+    src: url("../fonts/NeusaNextStd-Regular.ttf");
+}
+
+body {
+    overflow: hidden; /* Hide scrollbars */
+    font-family: "Neusa";
+}
+
+:root {
+    --primary-color: rgb(197, 31, 31);
+}  
+
+.selectedLink {
+    color: rgb(197, 31, 31);
+}
+
+.mainContainer {
+    width: 500px;
+    height: 400px;
+}
+
+a, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: black;
+}
+
+li {
+    margin-left: 10px;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#logo {
+    width: 50px;
+}
+
+.navigationWrapper {
+  
+    display: flex; 
+    justify-content: space-between;
+}
+
+.linkWrapper {
+    width:50%;
+}
