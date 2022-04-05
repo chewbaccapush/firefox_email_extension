@@ -34,7 +34,8 @@
 
     "permissions": [
       "*://developer.mozilla.org/*",
-      "webRequest"
+      "webRequest",
+      "storage"
     ],
 
     "background": {

@@ -46,3 +46,10 @@
     background-color: var(--primary-color);
     color: white;
 }
+
+.selectContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    gap: 5px;
+}

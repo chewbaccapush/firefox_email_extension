@@ -32,16 +32,17 @@
           <label id="labelInput" for="recipient">Recipient</label>
           <input id="recipient" type="text" />
         </div>
-        <div class="inputContainer">
-          <label id="labelInput" for="recipient">Select a key</label>
-          <select name="keys" id="keys"></select>
+        <div class="selectContainer">
+          <div id="container"></div>
         </div>
         <div class="inputContainer">
           <label id="labelInput">Message</label>
           <textarea id="message" type="text"></textarea>
         </div>
         <div class="inputContainer">
-          <button class="encryptButton" onclick="">Encrypt</button>
+          <button class="encryptButton" onclick="encryptMessage()">
+            Encrypt
+          </button>
         </div>
       </div>
     </div>
