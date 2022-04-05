@@ -3,7 +3,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="popupWindow.css" />
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="encrypt.css" />
   </head>
 
   <body>
@@ -26,7 +27,24 @@
           </ul>
         </div>
       </nav>
+      <div class="encryptContainer">
+        <div class="inputContainer">
+          <label id="labelInput" for="recipient">Recipient</label>
+          <input id="recipient" type="text" />
+        </div>
+        <div class="inputContainer">
+          <label id="labelInput" for="recipient">Select a key</label>
+          <select name="keys" id="keys"></select>
+        </div>
+        <div class="inputContainer">
+          <label id="labelInput">Message</label>
+          <textarea id="message" type="text"></textarea>
+        </div>
+        <div class="inputContainer">
+          <button class="encryptButton" onclick="">Encrypt</button>
+        </div>
+      </div>
     </div>
-    <script src="extensionScript.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>

@@ -25,7 +25,20 @@
       {
         "matches": ["*://*.mozilla.org/*"],
         "js": ["extensionScript.js"]
+       
       }
-    ]
+    ],
+
+    
+    "content_security_policy": "script-src 'self'; object-src '*'",
+
+    "permissions": [
+      "*://developer.mozilla.org/*",
+      "webRequest"
+    ],
+
+    "background": {
+      "scripts": ["extensionScript.js"]
+    }
   
   }
