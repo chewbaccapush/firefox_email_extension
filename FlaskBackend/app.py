@@ -4,14 +4,13 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/generateKey', methods=['GET'])
-def generateKey():
+@app.route('/generatePublicKey', methods=['GET'])
+def generatePublicKey():
     return 'generating..'
 
-@app.route('/generateKey', methods=['GET'])
-def generateKey():
+@app.route('/generatePrivateKey', methods=['GET'])
+def generatePrivateKey():
     return 'generating..'
-
 
 @app.route('/encrypt', methods=['POST'])
 def encrypt():
