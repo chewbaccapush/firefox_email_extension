@@ -1,16 +1,18 @@
-from flask import Flask
+from flask import *
 
 # port : http://127.0.0.1:5000
+import Controller
 
 app = Flask(__name__)
 
-@app.route('/generatePublicKey', methods=['GET'])
-def generatePublicKey():
+@app.route('/generateKeys', methods=['POST'])
+def generateKeys():
+    content = request.json
+    print(content['email'])
+    Controller.generateKeys(content['email'], content['password'])
+
     return 'generating..'
 
-@app.route('/generatePrivateKey', methods=['GET'])
-def generatePrivateKey():
-    return 'generating..'
 
 @app.route('/encrypt', methods=['POST'])
 def encrypt():
