@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *">
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="../globals.css" />
     <link rel="stylesheet" href="popupWindow.css" />
   </head>
 
@@ -12,7 +12,7 @@
     <div class="mainContainer">
       <nav class="navigationWrapper">
         <div class="logoWrapper">
-          <img id="logo" src="../icons/fill-sign.png" />
+          <img id="logo" src="../../icons/fill-sign.png" />
         </div>
         <div class="linkWrapper">
           <ul class="navigation">
@@ -20,22 +20,22 @@
               <a class="selectedLink" href="popupWindow.html">Keys</a>
             </li>
             <li class="parent">
-              <a class="link" id="encrypt" href="encrypt.html">Encrypt</a>
+              <a class="link" id="encrypt" href="../Encrypt/encrypt.html">Encrypt</a>
             </li>
             <li class="parent">
-              <a class="link" href="decrypt.html">Decrypt</a>
+              <a class="link" href="../Decrypt/decrypt.html">Decrypt</a>
             </li>
           </ul>
         </div>
       </nav>
       <div class="keysContainer">
-            <div class="generateKey" onclick="generateKey()">Generate key</div>
+            <a href="../GenerateKey/generateKey.html"><div class="generateKey" onclick="generateKey()">Generate key</div></a>
             <div class="tabelContainer">
                     <div class="tbl-header">
                       <table cellpadding="10" cellspacing="10" >
                         <thead>
                           <tr>
-                            <th>Name</th>
+                           
                             <th>Email</th>
                             <th>keyID</th>
                           </tr>
@@ -48,6 +48,6 @@
                       </table>
                     </div>
       </div>  
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
   </body>
 </html>

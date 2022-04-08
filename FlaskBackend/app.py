@@ -4,13 +4,27 @@ from flask import Flask
 
 app = Flask(__name__)
 
+@app.route('/generateKey', methods=['GET'])
+def generateKey():
+    return 'generating..'
+
+@app.route('/generateKey', methods=['GET'])
+def generateKey():
+    return 'generating..'
+
+
 @app.route('/encrypt', methods=['POST'])
 def encrypt():
     return 'encrypting..'
 
-@app.route('/decrypt', methods=['GET'])
-def encrypt():
+
+@app.route('/decrypt', methods=['POST'])
+def decrypt():
     return 'decrypting..'
+
+
+
+
 
 if __name__ == '__main__':
     app.run()

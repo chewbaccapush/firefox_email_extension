@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *">
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../globals.css" />
+    <link rel="stylesheet" href="generateKey.css" />
+  </head>
+
+  <body>
+    <div class="mainContainer">
+      <nav class="navigationWrapper">
+        <div class="logoWrapper">
+          <img id="logo" src="../../icons/fill-sign.png" />
+        </div>
+        <div class="linkWrapper">
+          <ul class="navigation">
+            <li class="parent">
+              <a class="selectedLink" href="../index/popupWindow.html">Keys</a>
+            </li>
+            <li class="parent">
+              <a class="link" id="encrypt" href="../Encrypt/encrypt.html">Encrypt</a>
+            </li>
+            <li class="parent">
+              <a class="link" href="../Decrypt/decrypt.html">Decrypt</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="generateKeyContainer">
+        <div class="inputContainer">
+            <label id="labelInput" for="email">Email:</label>
+            <input id="email" type="text" />
+        </div>
+        <div class="inputContainer">
+            <label id="labelInput" for="password">Password for key:</label>
+            <input id="password" type="password" />
+        </div>
+        <label id="keyInfo" >* Key is encrypted with RSA - 4096bit</label>
+        <div class="inputContainer">
+          <button class="generateButton" onclick="generateKey()">
+            Generate Key
+          </button>
+        </div>
+      </div>  
+    <script src="../script.js"></script>
+  </body>
+</html>

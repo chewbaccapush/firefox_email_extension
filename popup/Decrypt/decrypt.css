@@ -1,0 +1,42 @@
+.decryptContainer {
+    width: 75%;
+    margin: auto;
+    padding-top: 5%;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3rem;
+    gap: 5px;
+}
+
+#labelInput{
+    font-size:0.8rem;
+    
+}
+
+#fileInput {
+    width: 50%;
+    outline: var(--primary-color);
+}
+
+.decryptButton {
+    width: 20%;
+    font-size: 0.8rem;
+    background-color:  white;
+    border: 2px solid var(--primary-color);
+    border-radius: 20px;
+    padding: 7px 10px;
+    color: var(--primary-color);
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.decryptButton:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+
+
