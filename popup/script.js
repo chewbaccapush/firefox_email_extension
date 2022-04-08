@@ -19,7 +19,7 @@ const generateKeysTable = async() => {
 
     for (const key of keys)
     {
-        var option = document.createElement("option");
+        let option = document.createElement("option");
         option.value = key.id;
         option.name = key.name;
         select.appendChild(option);
@@ -88,8 +88,17 @@ const decryptMessage = () => {
     })
     .catch((e) => {console.log(e)})
 
+    download(decryptedFile, 'decryptedFile.txt')
+}
 
-
+function download(text, name) {
+    let div = document.getElementById('download');
+    let a = document.createElement('a');
+    let file = new Blob([text], {type: text});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    a.className = 'decryptButton'
+    div.append(a);
 }
 
 //Generate key
