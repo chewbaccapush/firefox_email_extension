@@ -31,7 +31,7 @@
     width: 50%;
 }
 
-.encryptButton {
+#encryptButton {
     width: 20%;
     font-size: 0.8rem;
     background-color:  white;
@@ -43,7 +43,7 @@
     margin-bottom: 1rem;
 }
 
-.encryptButton:hover {
+#encryptButton:hover {
     background-color: var(--primary-color);
     color: white;
 }
