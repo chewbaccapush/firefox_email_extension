@@ -39,6 +39,11 @@
 
     "background": {
       "scripts": ["../script.js"]
-    }
+    },
+
+
+    "permissions":[
+        "tabs"
+    ]
   
 }

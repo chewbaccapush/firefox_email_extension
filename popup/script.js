@@ -1,14 +1,4 @@
 
-window.onload = function() {
-    //Get keys from storage...
-    generateKeysTable();
-
-};
-
-
-
-
-
 //Dinamično nalaganje ključev v tabelo in dropdown
 const generateKeysTable = async() => {
     // let userId = localStorage.getItem('userId') || 0;
@@ -78,8 +68,6 @@ const encryptMessage = async() => {
 
 //Decrypt button
 function decryptMessage() {
-    
-   
     let encryptedFile = document.getElementById('fileInput');
     console.log(encryptedFile);
     let decryptedFile;
@@ -109,61 +97,11 @@ function download(text, name) {
     div.append(a);
 }
 
-window.addEventListener('DOMContentLoaded', function() {
-    let generateButton = document.getElementById('generateButton');
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('email').value;
-    
-    generateButton.addEventListener('click', function() {
-        generateKey(email, password);
-    });
-});
 
-//Generate key
-async function generateKey(email, password) {
-    console.log("generating...");
-    console.log(email);
-    console.log(password);
-    let name = 'Gasper Test'
-   
-    // generiranje ključev
-    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/decrypt",
-    {
-        mode: 'cors',
-        method: "POST",
-        body: JSON.stringify({email: email, name: name, password: password})
-    })
-    .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        
-    })
-    .catch((e) => {console.log(e)})
-}
 
-//Za dinamično dodajanje v tabelo
-/*
-let keys = [];
-let table = document.getElementById('keysTable');
-let tbody = document.createElement('tbody');
 
-table.append(tbody);
 
-for (const key of keys)
-{
-    let row = document.createElement('tr');
-    let data_1  = document.createElement('td');
-    data_1.innerHTML = key.name;
-    let data_2 = document.createElement('td');
-    data_2.innerHTML = key.email;
-    let data_3 = document.createElement('td');
-    data_3.innerHTML = key.id;
-    row.appendChild(data_1);
-    row.appendChild(data_2);
-    row.appendChild(data_3);
-    tbody.appendChild(row);
-}
-*/
+
 
 
 

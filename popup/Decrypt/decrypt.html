@@ -30,20 +30,20 @@
       </nav>
 
       <div class="decryptContainer">
-        <div class="fileInputContainer">
-          <label id="labelInput" for="fileInput">Choose file to decrypt</label>
-          <input id="fileInput" type="file" />
+        <div class="inputDecryptContainer">
+          <label id="labelInput">Message to decrypt: </label>
+          <textarea id="decryptMessage" type="text"></textarea>
         </div>
         <div class="inputContainer">
           <label id="labelInput">Password</label>
           <input id="decryptPassword" type="password" />
         </div>
         <div class="inputContainer">
-          <button class="decryptButton">Decrypt</button>
+          <button id="decryptButton">Decrypt</button>
         </div>
         <div id="download" class="inputContainer"></div>
       </div>
     </div>
-    <script src="../script.js"></script>
+    <script src="decrypt.js"></script>
   </body>
 </html>

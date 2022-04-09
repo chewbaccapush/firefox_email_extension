@@ -7,15 +7,23 @@
 .inputContainer {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     gap: 5px;
     width: 50%;
+}
+
+.inputDecryptContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    gap: 5px;
+    width: 80%;
 }
 
 .fileInputContainer {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     gap: 5px;
     width: 100%;
 }
@@ -25,12 +33,9 @@
     
 }
 
-#fileInput {
-    width: 50%;
-    outline: var(--primary-color);
-}
 
-.decryptButton {
+
+#decryptButton {
     width: 45%;
     font-size: 0.8rem;
     background-color:  white;
@@ -42,9 +47,16 @@
     margin-bottom: 1rem;
 }
 
-.decryptButton:hover {
+#decryptButton:hover {
     background-color: var(--primary-color);
     color: white;
+}
+
+#decryptMessage {
+    width: 100%;
+    resize: none;
+    outline: var(--primary-color);
+    height: 150px;
 }
 
 
