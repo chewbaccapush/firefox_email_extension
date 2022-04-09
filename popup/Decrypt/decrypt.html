@@ -3,6 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+
     <link rel="stylesheet" href="../globals.css" />
     <link rel="stylesheet" href="decrypt.css" />
   </head>
@@ -29,14 +30,16 @@
       </nav>
 
       <div class="decryptContainer">
-        <div class="inputContainer">
+        <div class="fileInputContainer">
           <label id="labelInput" for="fileInput">Choose file to decrypt</label>
           <input id="fileInput" type="file" />
         </div>
         <div class="inputContainer">
-          <button class="decryptButton" onclick="decryptMessage()">
-            Decrypt
-          </button>
+          <label id="labelInput">Password</label>
+          <input id="decryptPassword" type="password" />
+        </div>
+        <div class="inputContainer">
+          <button class="decryptButton">Decrypt</button>
         </div>
         <div id="download" class="inputContainer"></div>
       </div>

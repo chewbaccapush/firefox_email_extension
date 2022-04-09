@@ -3,6 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+
     <link rel="stylesheet" href="../globals.css" />
     <link rel="stylesheet" href="encrypt.css" />
   </head>
@@ -33,16 +34,14 @@
           <input id="recipient" type="text" />
         </div>
         <div class="selectContainer">
-          <div id="container"></div>
+          <div id="selectKeyContainer"></div>
         </div>
         <div class="inputContainer">
           <label id="labelInput">Message</label>
           <textarea id="message" type="text"></textarea>
         </div>
         <div class="inputContainer">
-          <button class="encryptButton" onclick="encryptMessage()">
-            Encrypt
-          </button>
+          <button class="encryptButton">Encrypt</button>
         </div>
       </div>
     </div>

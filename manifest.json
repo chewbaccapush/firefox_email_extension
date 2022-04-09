@@ -29,8 +29,7 @@
       }
     ],
 
-    
-    "content_security_policy": "script-src 'self'; object-src '*'",
+    "content_security_policy": " script-src 'self'; object-src 'self';",
 
     "permissions": [
       "*://developer.mozilla.org/*",
@@ -39,7 +38,7 @@
     ],
 
     "background": {
-      "scripts": ["extensionScript.js"]
+      "scripts": ["../script.js"]
     }
   
-  }
+}

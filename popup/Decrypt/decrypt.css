@@ -7,8 +7,17 @@
 .inputContainer {
     display: flex;
     flex-direction: column;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     gap: 5px;
+    width: 50%;
+}
+
+.fileInputContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    gap: 5px;
+    width: 100%;
 }
 
 #labelInput{

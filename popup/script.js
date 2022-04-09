@@ -1,18 +1,20 @@
 
-
 window.onload = function() {
     //Get keys from storage...
     generateKeysTable();
-  
-  
+
 };
+
+
+
+
 
 //Dinamično nalaganje ključev v tabelo in dropdown
 const generateKeysTable = async() => {
     // let userId = localStorage.getItem('userId') || 0;
     // let keys = await getKeys(userId);
-    let keys = [];
-
+    let keys = [{id: "00", name: "haha"}];
+    
     let select = document.createElement("select");
     select.name = "keys";
     select.id = "keys";
@@ -30,7 +32,8 @@ const generateKeysTable = async() => {
     label.innerText = "Select a key: "
     label.htmlFor = "keys";
 
-    document.getElementById("container").appendChild(label).appendChild(select);
+    let div = document.getElementById("selectKeyContainer");
+    div.appendChild(label).appendChild(select);
 }
 
 //Get keys of a user
@@ -71,12 +74,17 @@ const encryptMessage = async() => {
     .catch((e) => {console.log(e)})
 }
 
+
+
 //Decrypt button
-const decryptMessage = () => {
-    let encryptedFile = document.getElementById('fileInput').value;
+function decryptMessage() {
+    
+   
+    let encryptedFile = document.getElementById('fileInput');
+    console.log(encryptedFile);
     let decryptedFile;
 
-    fetch("http://127.0.0.1:5000/decrypt",
+    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/decrypt",
     {
         method: "POST",
         body: JSON.stringify(encryptedFile)
@@ -87,10 +95,10 @@ const decryptMessage = () => {
         else decryptedFile = res;
     })
     .catch((e) => {console.log(e)})
-
-    download(decryptedFile, 'decryptedFile.txt')
 }
 
+
+//Download function
 function download(text, name) {
     let div = document.getElementById('download');
     let a = document.createElement('a');
@@ -101,25 +109,36 @@ function download(text, name) {
     div.append(a);
 }
 
-//Generate key
-const generateKey = async() => {
+window.addEventListener('DOMContentLoaded', function() {
+    let generateButton = document.getElementById('generateButton');
     let email = document.getElementById('email').value;
-    let password = document.getElementById('password').value;
+    let password = document.getElementById('email').value;
+    
+    generateButton.addEventListener('click', function() {
+        generateKey(email, password);
+    });
+});
 
-    let user = {email: email, password: password};
- 
-    fetch("http://127.0.0.1:5000/generateKey",
+//Generate key
+async function generateKey(email, password) {
+    console.log("generating...");
+    console.log(email);
+    console.log(password);
+    let name = 'Gasper Test'
+   
+    // generiranje ključev
+    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/decrypt",
     {
+        mode: 'cors',
         method: "POST",
-        body: JSON.stringify(user)
+        body: JSON.stringify({email: email, name: name, password: password})
     })
     .then((res) => {
         console.log(res);
-        localStorage.setItem('userId', res.userId);
-        generateKeysTable();
+        console.log(res.data);
+        
     })
     .catch((e) => {console.log(e)})
-
 }
 
 //Za dinamično dodajanje v tabelo
