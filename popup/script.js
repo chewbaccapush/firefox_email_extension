@@ -67,23 +67,7 @@ const encryptMessage = async() => {
 
 
 //Decrypt button
-function decryptMessage() {
-    let encryptedFile = document.getElementById('fileInput');
-    console.log(encryptedFile);
-    let decryptedFile;
 
-    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/decrypt",
-    {
-        method: "POST",
-        body: JSON.stringify(encryptedFile)
-    })
-    .then((res) => {
-        console.log(res);
-        if (res.isJson()) decryptedFile = JSON.parse(res);
-        else decryptedFile = res;
-    })
-    .catch((e) => {console.log(e)})
-}
 
 
 //Download function

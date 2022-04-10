@@ -1,7 +1,6 @@
 window.onload = function() {
     let decryptButton = document.getElementById('decryptButton');
    
- 
     decryptButton.addEventListener('click', function() {
         let encryptedMessage = document.getElementById('decryptMessage').value;
         let passphrase = document.getElementById('decryptPassword').value;

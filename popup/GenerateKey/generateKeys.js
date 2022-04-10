@@ -24,7 +24,7 @@ async function generateKey(email, password, name) {
         body: JSON.stringify({email: email, name: name, password: password})
     })
     .then((res) => {
-        console.log(res);
+        console.log(res.text());
         console.log(res.data);
         
     })
