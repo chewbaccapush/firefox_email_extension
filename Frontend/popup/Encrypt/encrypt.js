@@ -2,6 +2,9 @@ window.onload = () => {
     let encryptButton = document.getElementById("encryptButton");
     encryptButton.onclick = () => encryptMessage();
 
+    let copyButton = document.getElementById("copyButton");
+    copyButton.onclick = () => copyToClipboard();
+
     generateKeysTable();
 }
 
@@ -11,10 +14,10 @@ const encryptMessage = async() => {
     let senderMail = localStorage.key(0);
     let senderPrivateKeys = JSON.parse(localStorage.getItem(senderMail));
     let selectedKeyIndex = document.getElementById('keys').value;
-    senderPrivateKey = senderPrivateKeys[selectedKeyIndex];
+    let senderPrivateKey = senderPrivateKeys[selectedKeyIndex];
     let passphrase = document.getElementById('passphrase').value;
 
-    const rawResponse = await fetch('http://localhost:3000/generateKey', {
+    const rawResponse = await fetch('http://localhost:3000/encrypt', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -23,6 +26,15 @@ const encryptMessage = async() => {
         body: JSON.stringify({recipient: recipient, message: message, senderPrivateKey: senderPrivateKey, passphrase: passphrase})
       });
       const content = await rawResponse.json();
+
+      document.getElementById('message').value = content.encrypted;
+      document.getElementById('copyButton').style.display = "block";
+}
+
+const copyToClipboard = () => {
+    let message = document.getElementById('message').value;
+    navigator.clipboard.writeText(message);
+
 }
 
 const generateKeysTable = async() => {

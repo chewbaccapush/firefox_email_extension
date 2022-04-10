@@ -106,23 +106,23 @@ app.get('/getKey/:email', async (request, response) => {
 })
 
 // enkripcija
-app.post('/encrypt', async (req, response) => {
-    let {recipient} = req.body;
-    let {message} = req.body;
-    let {senderPrivateKey} = req.body;
-    let {passphrase} = req.body;
-    //dobimo public key prejemnika
+app.post('/encrypt', async (request, response) => {
+    let {recipient} = request.body;
+    let {message} = request.body;
+    let {senderPrivateKey} = request.body;
+    let {passphrase} = request.body;
+
+    // dobimo public key prejemnika
     let encrypted;
     axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(recipient))
         .then(async (opnepgpResponse) => {
             let recipientPublicKey = opnepgpResponse.data;
             encrypted = await encrypt(recipientPublicKey, message, senderPrivateKey, passphrase)
-            response.send(encrypted)
+            response.status('200').json({encrypted: encrypted});
         })
         .catch((err) => {
             response.status('400').send(err);
         })
-    //response.status('200').send(encrypted);
 })
 
 // dekripcija
@@ -153,7 +153,6 @@ app.post('/decrypt', async (req, response) => {
 })
 
 async function encrypt(recipientPublicKey, message, senderPrivateKey, passphrase) {
-
     // Private key za podpisaovanje
     const privateKey = await openpgp.decryptKey({
         privateKey: await openpgp.readPrivateKey({armoredKey: senderPrivateKey}),
@@ -169,7 +168,6 @@ async function encrypt(recipientPublicKey, message, senderPrivateKey, passphrase
         encryptionKeys: publicKey,
         signingKeys: privateKey // optional
     });
-    console.log(encrypted);
     return encrypted;
 }
 
