@@ -11,9 +11,7 @@ const encryptMessage = async() => {
     let senderMail = localStorage.key(0);
     let senderPrivateKeys = JSON.parse(localStorage.getItem(senderMail));
     let selectedKeyIndex = document.getElementById('keys').value;
-
-    let senderPrivateKey = senderPrivateKeys[selectedKeyIndex]
-
+    senderPrivateKey = senderPrivateKeys[selectedKeyIndex];
     let passphrase = document.getElementById('passphrase').value;
 
     const rawResponse = await fetch('http://localhost:3000/generateKey', {
@@ -29,7 +27,7 @@ const encryptMessage = async() => {
 
 const generateKeysTable = async() => {
     let senderMail = localStorage.key(0);
-    let keys = JSON.parse(localStorage.getItem(senderMail));
+    let keys = JSON.parse(localStorage.getItem(senderMail)) || [];
     
     let select = document.createElement("select");
     select.name = "keys";

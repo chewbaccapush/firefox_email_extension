@@ -1,7 +1,7 @@
 .encryptContainer {
     width: 75%;
     margin: auto;
-    padding-top: 5%;
+    padding-top: 2.5%;
 }
 
 .inputContainer {
@@ -16,6 +16,11 @@
     outline: var(--primary-color);
 }
 
+#passphrase {
+    width: 68%;
+    outline: var(--primary-color);
+}
+
 #labelInput{
     font-size:0.8rem;
     margin-right: 1rem;
@@ -24,7 +29,7 @@
 #message {
     resize: none;
     outline: var(--primary-color);
-    height: 100px;
+    height: 80px;
 }
 
 #keys {

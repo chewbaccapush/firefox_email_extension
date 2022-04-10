@@ -91,54 +91,6 @@ app.post("/generateKey", async (req, res) => {
        .catch(err => {
          res.status(403).send(err);
        })
- 
-       
-    /*
-    // dobis iz vmesnika
-    let email = request.params.email
-    let name = 'Vincic Test'
-    let password = 'test1234'
-
-    // generiranje ključev
-    const { privateKey, publicKey, revocationCertificate } = await openpgp.generateKey({
-        type: 'ecc', // Type of the key, defaults to ECC
-        curve: 'curve25519', // ECC curve name, defaults to curve25519
-        userIDs: [{ name: name, email: email }], // you can pass multiple user IDs
-        passphrase: password, // protects the private key
-        format: 'armored' // output key format, defaults to 'armored' (other options: 'binary' or 'object')
-    });
-
-    console.log(privateKey);     // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
-    console.log(publicKey);      // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
-    console.log(revocationCertificate); // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
-
-    // shranjevanje public keya na server
-    await axios.post("https://keys.openpgp.org/vks/v1/upload", {
-            keytext: publicKey
-        })
-        .then(res1 => {
-            console.log("axios1:", res1.data)
-            let token = res1.data.token
-            axios.post("https://keys.openpgp.org/vks/v1/request-verify", {
-                token: token,
-                addresses: [email]
-            })
-                .then(res2 => {
-                    console.log("axios2:", res2.data)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        .finally(() => {
-            // response.send('res')
-        }).data
-
-    console.log(token);
-    */
 })
 
 // dobi ključ po email naslovu

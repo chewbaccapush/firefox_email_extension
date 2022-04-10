@@ -36,10 +36,18 @@ table {
 
 thead {
     background-color:black;
-    
+    border:1px solid black;
 }
 
 td, th {
     text-align: left;
     padding: 10px;
+}
+
+.row{
+    background-color: var(--primary-color);
+}
+
+.cell {
+    border:1px solid var(--primary-color);
 }
