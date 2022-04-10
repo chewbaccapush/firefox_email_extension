@@ -105,21 +105,21 @@ app.get('/getKey/:email', async (request, response) => {
 
 // enkripcija
 app.post('/encrypt', async (request, response) => {
-    let emailRecipient = "gasper.lukacs@gmail.com";
-    console.log(emailRecipient)
-    let emailSender = "djpolner@gmail.com";
-    let message = "zdravo";
-    // 1. - dobimo public key prejemnika
-    axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(emailRecipient))
-        .then(async (res) => {
-            let recipientPublicKey = res.data;
-            // 2. - dejanska enkripcija
-            await encrypt(recipientPublicKey)
+    let {recipient} = req.body;
+    let {message} = req.body;
+    let {passphrase} = req.body;
+    console.log(req.body);
+    //dobimo public key prejemnika
+    let encrypted;
+    axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(recipient))
+        .then(async (opnepgpResponse) => {
+            let recipientPublicKey = opnepgpResponse.data;
+            encrypted = await encrypt(recipientPublicKey, message, passphrase)
         })
         .catch((err) => {
-            console.log("err")
+            response.status('400').send(err);
         })
-    response.send('res')
+    response.status('200').send(encrypted);
 })
 
 app.get('/decrypt', async (request, response) => {
@@ -127,25 +127,25 @@ app.get('/decrypt', async (request, response) => {
     response.send('res')
 })
 
-async function encrypt(publicKeyRecipient) {
+async function encrypt(recipientPublicKey, message, passphrase) {
 
     // Private key za podpisaovanje
     const privateKey = await openpgp.decryptKey({
         privateKey: await openpgp.readPrivateKey({ armoredKey: privateKeySender }),
-        passphrase: 'test1234'
+        passphrase: passphrase
     });
 
     // Public key prejemnika pretvorio v object
-    const publicKey = await openpgp.readKey({ armoredKey: publicKeyRecipient });
+    const publicKey = await openpgp.readKey({ armoredKey: recipientPublicKey });
 
     // Kriptira
-    let message = 'Hello'
     const encrypted = await openpgp.encrypt({
         message: await openpgp.createMessage({ text: message }), // input as Message object
         encryptionKeys: publicKey,
         signingKeys: privateKey // optional
     });
     console.log(encrypted);
+    return encrypted;
 }
 
 async function decrypt() {

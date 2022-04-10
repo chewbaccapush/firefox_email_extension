@@ -6,11 +6,11 @@ window.onload = () => {
 const encryptMessage = async() => {
     let recipient = document.getElementById('recipient').value;
     let message = document.getElementById('message').value;
-    let key = document.getElementById('keys').value;
+    let senderPrivateKey = localStorage.getItem('privateKey');
 
-    let toEncrypt = {recipient: recipient, message: message, key: key};
+    let toEncrypt = {recipient: recipient, message: message, senderPrivateKey: senderPrivateKey};
 
-    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/encrypt",
+    fetch("localhost:3000/encrypt",
     {
         method: "POST",
         body: JSON.stringify(toEncrypt)
