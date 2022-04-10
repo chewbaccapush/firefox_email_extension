@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FlaskBackend.iml" filepath="$PROJECT_DIR$/.idea/FlaskBackend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/openpgptest.iml" filepath="$PROJECT_DIR$/.idea/openpgptest.iml" />
     </modules>
   </component>
 </project>
