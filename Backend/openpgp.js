@@ -3,8 +3,15 @@ const express = require('express')
 const axios = require('axios')
 const http = require('http');
 const app = express()
-const port = 3000
-const bodyParser = require('body-parser')
+const port = 3000;
+const bodyParser = require('body-parser');
+const cors = require('cors');
+app.use(
+    cors({
+      origin: "*",
+    })
+  );
+
 
 const privateKeyRecipient = "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
     "\n" +
@@ -44,7 +51,49 @@ const privateKeySender = "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
 
     app.use(bodyParser.json())
 
-app.post("/generate/:email", async (request, response) => {
+app.post("/generateKey", async (req, res) => {
+     
+     // dobis iz vmesnika
+     const {email} = req.body;
+     const {name} = req.body;
+     const {password} = req.body;
+ 
+     // generiranje ključev
+     const { privateKey, publicKey, revocationCertificate } = await openpgp.generateKey({
+         type: 'ecc', // Type of the key, defaults to ECC
+         curve: 'curve25519', // ECC curve name, defaults to curve25519
+         userIDs: [{ name: name, email: email }], // you can pass multiple user IDs
+         passphrase: password, // protects the private key
+         format: 'armored' // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+     });
+ 
+     console.log(privateKey);
+     console.log(publicKey);
+     console.log(email);
+     let response = {privateKey: privateKey};
+     console.log(req.body);
+ 
+     // shranjevanje public keya na server
+     axios.post("https://keys.openpgp.org/vks/v1/upload", { keytext: publicKey })
+       .then(res1 => {
+         let token = res1.data.token;
+         axios.post("https://keys.openpgp.org/vks/v1/request-verify", {
+           token: token,
+           addresses: [email]
+         })
+         .then(res2 => {
+            res.status(200).json(response);
+         })
+         .catch(err => {
+           res.send(err);
+         })
+       })
+       .catch(err => {
+         res.status(403).send(err);
+       })
+ 
+       
+    /*
     // dobis iz vmesnika
     let email = request.params.email
     let name = 'Vincic Test'
@@ -85,10 +134,11 @@ app.post("/generate/:email", async (request, response) => {
             console.log(err)
         })
         .finally(() => {
-            response.send('res')
+            // response.send('res')
         }).data
 
     console.log(token);
+    */
 })
 
 // dobi ključ po email naslovu

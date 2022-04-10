@@ -1,7 +1,6 @@
 window.onload = function() {
     let generateButton = document.getElementById('generateButton');
    
- 
     generateButton.addEventListener('click', function() {
         let email = document.getElementById('email').value;
         let password = document.getElementById('password').value;
@@ -17,16 +16,26 @@ async function generateKey(email, password, name) {
     console.log(email);
     console.log(password);
 
-    // generiranje ključev
-    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/generateKeys",
-    {
-        method: "POST",
+    const rawResponse = await fetch('http://localhost:3000/generateKey', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({email: email, name: name, password: password})
-    })
-    .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        
-    })
-    .catch((e) => {console.log(e)})
+      });
+      const content = await rawResponse.json();
+
+      let storage = []; 
+      if (localStorage.getItem(email) !== null) {
+        storage = localStorage.getItem(email);
+        storage = JSON.parse(storage);
+        console.log(storage);
+        storage.push(content.privateKey);
+        console.log(storage);
+        localStorage.setItem(email, JSON.stringify(storage));
+      } else {
+        storage[0] = content.privateKey;
+        localStorage.setItem(email, JSON.stringify(storage));
+      }
 }
