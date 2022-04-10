@@ -30,6 +30,9 @@
       </nav>
 
       <div class="decryptContainer">
+        <div class="selectContainer">
+          <div id="selectKeyContainer"></div>
+        </div>
         <div class="inputDecryptContainer">
           <label id="labelInput">Message to decrypt: </label>
           <textarea id="decryptMessage" type="text"></textarea>
@@ -37,6 +40,10 @@
         <div class="inputContainer">
           <label id="labelInput">Password</label>
           <input id="decryptPassword" type="password" />
+        </div>
+        <div class="inputContainer">
+          <label id="labelInput">Recipient email</label>
+          <input id="decryptEmail" type="text"/>
         </div>
         <div class="inputContainer">
           <button id="decryptButton">Decrypt</button>

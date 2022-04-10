@@ -1,44 +1,66 @@
-window.onload = function() {
-    let decryptButton = document.getElementById('decryptButton');
-   
-    decryptButton.addEventListener('click', function() {
-        let encryptedMessage = document.getElementById('decryptMessage').value;
-        let passphrase = document.getElementById('decryptPassword').value;
-        let email = document.getElementById('emailForKey').value;
-        decryptMessage(encryptedMessage, passphrase, email);
-    });
+window.onload = function () {
+    let generateButton = document.getElementById('decryptButton');
 
+    generateButton.addEventListener('click', function () {
+        let message = document.getElementById('decryptMessage').value;
+        let password = document.getElementById('decryptPassword').value;
+        let email = document.getElementById('decryptEmail').value;
+        decryptMessage(message, password, email);
+    });
+    generateKeysTable();
 };
 
-async function decryptMessage(encryptedMessage, passphrase, email) {
+//Generate key
+async function decryptMessage(message, password, email) {
+    console.log("decrypting...");
 
-    let decryptedMessage;
+    let senderMail = localStorage.key(0);
+    let senderPrivateKeys = JSON.parse(localStorage.getItem(senderMail));
+    let selectedKeyIndex = document.getElementById('keys').value;
+    let recipientPrivateKey = senderPrivateKeys[selectedKeyIndex];
 
-    let armoredKey = await getKey(email);
+    // console.log(email);
+    // console.log(password);
 
-    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/decrypt",
-    {
-        method: "POST",
-        body: JSON.stringify({passphrase: passphrase, encryptedMessage: encryptedMessage, armoredKey: armoredKey})
-    })
-    .then((res) => {
-        console.log(res);
-        if (res.isJson()) decryptedFile = JSON.parse(res);
-        else decryptedFile = res;
-    })
-    .catch((e) => {console.log(e)})
+    const rawResponse = await fetch('http://localhost:3000/decrypt', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            message: message,
+            recipientPrivateKey: recipientPrivateKey,
+            senderEmail: email,
+            passphrase: password
+        })
+    });
+
+    const content = await rawResponse.json();
+    console.log("dec ", content);
+    document.getElementById("decryptMessage").value = content.decrypted;
 }
 
-const getKey = async(email) => {
-   
-    fetch("https://europe-west3-firefoxextension.cloudfunctions.net/getKeys",
-    {
-        method: "POST",
-        body: JSON.stringify({email: email})
-    })
-    .then((res) => {
-        console.log(res.data)
-        return res.data
-    })
-    .catch((e) => { console.log(e) })
+const generateKeysTable = async () => {
+    let senderMail = localStorage.key(0);
+    let keys = JSON.parse(localStorage.getItem(senderMail)) || [];
+
+    let select = document.createElement("select");
+    select.name = "keys";
+    select.id = "keys";
+
+    for (const key of keys) {
+        let option = document.createElement("option");
+        option.value = keys.indexOf(key);
+        option.innerText = keys.indexOf(key) + 1;
+        select.appendChild(option);
+    }
+
+    let label = document.createElement("label");
+    label.id = "labelInput"
+    label.innerText = "Select a key: "
+    label.htmlFor = "keys";
+
+    let div = document.getElementById("selectKeyContainer");
+    div.appendChild(label).appendChild(select);
 }

@@ -8,9 +8,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 app.use(
     cors({
-      origin: "*",
+        origin: "*",
     })
-  );
+);
 
 
 const privateKeyRecipient = "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
@@ -49,48 +49,48 @@ const privateKeySender = "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
     "=t7uQ\n" +
     "-----END PGP PRIVATE KEY BLOCK-----\n"
 
-    app.use(bodyParser.json())
+app.use(bodyParser.json())
 
 app.post("/generateKey", async (req, res) => {
-     
-     // dobis iz vmesnika
-     const {email} = req.body;
-     const {name} = req.body;
-     const {password} = req.body;
- 
-     // generiranje ključev
-     const { privateKey, publicKey, revocationCertificate } = await openpgp.generateKey({
-         type: 'ecc', // Type of the key, defaults to ECC
-         curve: 'curve25519', // ECC curve name, defaults to curve25519
-         userIDs: [{ name: name, email: email }], // you can pass multiple user IDs
-         passphrase: password, // protects the private key
-         format: 'armored' // output key format, defaults to 'armored' (other options: 'binary' or 'object')
-     });
- 
-     console.log(privateKey);
-     console.log(publicKey);
-     console.log(email);
-     let response = {privateKey: privateKey};
-     console.log(req.body);
- 
-     // shranjevanje public keya na server
-     axios.post("https://keys.openpgp.org/vks/v1/upload", { keytext: publicKey })
-       .then(res1 => {
-         let token = res1.data.token;
-         axios.post("https://keys.openpgp.org/vks/v1/request-verify", {
-           token: token,
-           addresses: [email]
-         })
-         .then(res2 => {
-            res.status(200).json(response);
-         })
-         .catch(err => {
-           res.send(err);
-         })
-       })
-       .catch(err => {
-         res.status(403).send(err);
-       })
+
+    // dobis iz vmesnika
+    const {email} = req.body;
+    const {name} = req.body;
+    const {password} = req.body;
+
+    // generiranje ključev
+    const {privateKey, publicKey, revocationCertificate} = await openpgp.generateKey({
+        type: 'ecc', // Type of the key, defaults to ECC
+        curve: 'curve25519', // ECC curve name, defaults to curve25519
+        userIDs: [{name: name, email: email}], // you can pass multiple user IDs
+        passphrase: password, // protects the private key
+        format: 'armored' // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+    });
+
+    console.log(privateKey);
+    console.log(publicKey);
+    console.log(email);
+    let response = {privateKey: privateKey};
+    console.log(req.body);
+
+    // shranjevanje public keya na server
+    axios.post("https://keys.openpgp.org/vks/v1/upload", {keytext: publicKey})
+        .then(res1 => {
+            let token = res1.data.token;
+            axios.post("https://keys.openpgp.org/vks/v1/request-verify", {
+                token: token,
+                addresses: [email]
+            })
+                .then(res2 => {
+                    res.status(200).json(response);
+                })
+                .catch(err => {
+                    res.send(err);
+                })
+        })
+        .catch(err => {
+            res.status(403).send(err);
+        })
 })
 
 // dobi ključ po email naslovu
@@ -106,7 +106,7 @@ app.get('/getKey/:email', async (request, response) => {
 })
 
 // enkripcija
-app.post('/encrypt', async (request, response) => {
+app.post('/encrypt', async (req, response) => {
     let {recipient} = req.body;
     let {message} = req.body;
     let {senderPrivateKey} = req.body;
@@ -117,32 +117,55 @@ app.post('/encrypt', async (request, response) => {
         .then(async (opnepgpResponse) => {
             let recipientPublicKey = opnepgpResponse.data;
             encrypted = await encrypt(recipientPublicKey, message, senderPrivateKey, passphrase)
+            response.send(encrypted)
         })
         .catch((err) => {
             response.status('400').send(err);
         })
-    response.status('200').send(encrypted);
+    //response.status('200').send(encrypted);
 })
 
-app.get('/decrypt', async (request, response) => {
-    decrypt();
-    response.send('res')
+// dekripcija
+app.post('/decrypt', async (req, response) => {
+    let {message} = req.body;
+    let {recipientPrivateKey} = req.body;
+    let {senderEmail} = req.body;
+    let {passphrase} = req.body;
+
+    // poišče javni ključ v bazi
+    try {
+
+        let senderPublicKey = await axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(senderEmail))
+    } catch (e) {
+        console.log("Fetching public key error: ", e.message)
+    }
+    // console.log(senderPublicKey.data)
+
+    try {
+        let decrypted = await decrypt(message, recipientPrivateKey, senderPublicKey.data, passphrase);
+        console.log(decrypted)
+        response.json({decrypted: decrypted})
+    } catch (e) {
+        console.log("Decryption error: ", e.message)
+        response.status(400).send(e.message)
+    }
+    //decrypt();
 })
 
 async function encrypt(recipientPublicKey, message, senderPrivateKey, passphrase) {
 
     // Private key za podpisaovanje
     const privateKey = await openpgp.decryptKey({
-        privateKey: await openpgp.readPrivateKey({ armoredKey: senderPrivateKey }),
+        privateKey: await openpgp.readPrivateKey({armoredKey: senderPrivateKey}),
         passphrase: passphrase
     });
 
     // Public key prejemnika pretvorio v object
-    const publicKey = await openpgp.readKey({ armoredKey: recipientPublicKey });
+    const publicKey = await openpgp.readKey({armoredKey: recipientPublicKey});
 
     // Kriptira
     const encrypted = await openpgp.encrypt({
-        message: await openpgp.createMessage({ text: message }), // input as Message object
+        message: await openpgp.createMessage({text: message}), // input as Message object
         encryptionKeys: publicKey,
         signingKeys: privateKey // optional
     });
@@ -150,17 +173,19 @@ async function encrypt(recipientPublicKey, message, senderPrivateKey, passphrase
     return encrypted;
 }
 
-async function decrypt() {
+async function decrypt(data, recipientPrivateKey, senderPublicKey, pass) {
+    // console.log("test ", String(data));
+    // console.log("test1 ", recipientPrivateKey);
     let encryptedMessage = "-----BEGIN PGP MESSAGE-----\n" +
         "\n" +
-        "wV4DIsOE4y1IZi8SAQdA4oG65C48YD8s4Xz2MsOwXEuWrGPrVe+I8F9hBR9J\n" +
-        "2TcwoLt8/BAnHFIvo6Xk5+z6xYhUduDgGSbcLHE+Zj6Ux7OUQLlbn+8VMs8B\n" +
-        "VSiAZwrI0sAEAUqrgkrplc3r/Q76u6zkKHnV+idtKiF2n5SYidWTOO5OWLEN\n" +
-        "Bp0j7EXYDKx9WMIydvfgT1gFByYIea9pajNvNJds3wiJeQW4QruXJqoYPU3+\n" +
-        "KLc9qyVcZHcxC9Q9gSXzvm5JH2yUBqt4B5w9qT/Ud5VjTgW5LZi/lCCYljJx\n" +
-        "oje3tltdn7E7NnVSdIhGivRbGvq1c/xJdz0me3fH69Su57jxhxaGQVM7gCgw\n" +
-        "glNa+t7N39lZXE6QJvAF9/0izoa2NYtO6A==\n" +
-        "=1YTX\n" +
+        "wV4D36MKIc4I1yUSAQdARuKLfr0CR9E2nEfbOqMoKAKTFHzLbvUSRMzoeoc5\n" +
+        "03cwYdpesrs9f5FysWWgfQrjgylEECCVEri8lk2eFGsrtruqWilq5pCaQ1TQ\n" +
+        "blBTwitf0r0BZM+sOV+vSi+SpqfQYfenJ6CRW8aKT2xBHC7ZOykrpb0Rv+1w\n" +
+        "gLSkts+84CMJgBA2spT2IiHe5OOjbkPYSJzkghOwkQhuc0+/Fa6mTI/hWUf7\n" +
+        "2xR+fqKpUZNBSg78OWPSVbJp0f2CMgYYbCc7giR+dBVx07dREIW2sSD6QJFM\n" +
+        "eTSarFg27gdU3Udl4FZbKt1HF819NjUJeKOmt4qF31LpcCpZ5Ma4SB6tKDwq\n" +
+        "5PNly0Q930pLgYWUFtOv8MQ=\n" +
+        "=36PE\n" +
         "-----END PGP MESSAGE-----"
 
     // pretvori sporocilo v objekt
@@ -170,12 +195,12 @@ async function decrypt() {
 
     // pretvori private key v objekt
     const privateKey = await openpgp.decryptKey({
-        privateKey: await openpgp.readPrivateKey({ armoredKey: privateKeyRecipient }),
-        passphrase: 'test1234'
+        privateKey: await openpgp.readPrivateKey({armoredKey: recipientPrivateKey}),
+        passphrase: pass
     });
 
     // Za verificiranje podpisa
-    let armoredKey = '-----BEGIN PGP PUBLIC KEY BLOCK-----\n' +
+    /*let armoredKey = '-----BEGIN PGP PUBLIC KEY BLOCK-----\n' +
         'Comment: BDE1 B4D8 3659 C84A 5679  8ADA 5BDF E73E 0F7B 9B86\n' +
         'Comment: Vincic Test <sasa.vincic16@gmail.com>\n' +
         '\n' +
@@ -189,20 +214,22 @@ async function decrypt() {
         'W9/nPg97m4bD7AEAu+1uNBMzuzwtTAUppESDrpwAnKvnbATH/JxCA+JTpjkA/0+V\n' +
         'cIjglcaAnPhRyQ1lbIUQHLDSRla0MIHlBP+Li+4C\n' +
         '=kTJk\n' +
-        '-----END PGP PUBLIC KEY BLOCK-----'
+        '-----END PGP PUBLIC KEY BLOCK-----'*/
 
-    console.log(armoredKey)
+
+    //console.log(armoredKey)
 
     // public key posiljatelja (za verificireanje)
-    const publicKey = await openpgp.readKey({ armoredKey:  armoredKey });
+    console.log(senderPublicKey)
+    const publicKey = await openpgp.readKey({armoredKey: senderPublicKey});
 
     // dekriptiranje
-    const { data: decrypted, signatures } = await openpgp.decrypt({
+    const {data: decrypted, signatures} = await openpgp.decrypt({
         message,
         verificationKeys: publicKey, // optional
         decryptionKeys: privateKey
     });
-    console.log(decrypted)
+    //console.log(decrypted)
 
     // preveri skladnost podpisa
     try {
@@ -211,6 +238,7 @@ async function decrypt() {
     } catch (e) {
         throw new Error('Signature could not be verified: ' + e.message);
     }
+    return decrypted;
 }
 
 async function getPublicKey(email) {
