@@ -131,15 +131,15 @@ app.post('/decrypt', async (req, response) => {
     let {recipientPrivateKey} = req.body;
     let {senderEmail} = req.body;
     let {passphrase} = req.body;
+    console.log(senderEmail);
 
     // poišče javni ključ v bazi
-    try {
-
-        let senderPublicKey = await axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(senderEmail))
-    } catch (e) {
-        console.log("Fetching public key error: ", e.message)
-    }
-    // console.log(senderPublicKey.data)
+    //try {
+    let senderPublicKey = await axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(senderEmail))
+    //} catch (e) {
+    //console.log("Fetching public key error: ", e.message)
+    //}
+    console.log(senderPublicKey.data)
 
     try {
         let decrypted = await decrypt(message, recipientPrivateKey, senderPublicKey.data, passphrase);
@@ -172,23 +172,10 @@ async function encrypt(recipientPublicKey, message, senderPrivateKey, passphrase
 }
 
 async function decrypt(data, recipientPrivateKey, senderPublicKey, pass) {
-    // console.log("test ", String(data));
-    // console.log("test1 ", recipientPrivateKey);
-    let encryptedMessage = "-----BEGIN PGP MESSAGE-----\n" +
-        "\n" +
-        "wV4D36MKIc4I1yUSAQdARuKLfr0CR9E2nEfbOqMoKAKTFHzLbvUSRMzoeoc5\n" +
-        "03cwYdpesrs9f5FysWWgfQrjgylEECCVEri8lk2eFGsrtruqWilq5pCaQ1TQ\n" +
-        "blBTwitf0r0BZM+sOV+vSi+SpqfQYfenJ6CRW8aKT2xBHC7ZOykrpb0Rv+1w\n" +
-        "gLSkts+84CMJgBA2spT2IiHe5OOjbkPYSJzkghOwkQhuc0+/Fa6mTI/hWUf7\n" +
-        "2xR+fqKpUZNBSg78OWPSVbJp0f2CMgYYbCc7giR+dBVx07dREIW2sSD6QJFM\n" +
-        "eTSarFg27gdU3Udl4FZbKt1HF819NjUJeKOmt4qF31LpcCpZ5Ma4SB6tKDwq\n" +
-        "5PNly0Q930pLgYWUFtOv8MQ=\n" +
-        "=36PE\n" +
-        "-----END PGP MESSAGE-----"
 
     // pretvori sporocilo v objekt
     let message = await openpgp.readMessage({
-        armoredMessage: encryptedMessage // parse armored message
+        armoredMessage: data // parse armored message
     });
 
     // pretvori private key v objekt
@@ -218,16 +205,16 @@ async function decrypt(data, recipientPrivateKey, senderPublicKey, pass) {
     //console.log(armoredKey)
 
     // public key posiljatelja (za verificireanje)
-    console.log(senderPublicKey)
+    //console.log(senderPublicKey)
     const publicKey = await openpgp.readKey({armoredKey: senderPublicKey});
-
     // dekriptiranje
     const {data: decrypted, signatures} = await openpgp.decrypt({
         message,
         verificationKeys: publicKey, // optional
         decryptionKeys: privateKey
     });
-    //console.log(decrypted)
+
+    //console.log("dee ", decrypted)
 
     // preveri skladnost podpisa
     try {
