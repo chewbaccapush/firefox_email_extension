@@ -12,43 +12,6 @@ app.use(
     })
 );
 
-
-const privateKeyRecipient = "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
-    "\n" +
-    "xYYEYlFpQhYJKwYBBAHaRw8BAQdAAckpcsYNv0PtZGXlSDxHKCgGR6fMxQ7U\n" +
-    "hmXdFWiT2l3+CQMIpv6rbC322A7gDI4qNSR653iJl+jo0X4qaSKvkf6Jo4CU\n" +
-    "mS3MHBAqH4nsvfGvXT/rUvyp9XMBl0SckptNkkMqZJck8BlGmoTY3Pv7mG/f\n" +
-    "w80jRmljbyBUZXN0IDxnYXNwZXIubHVrYWNzQGdtYWlsLmNvbT7CjAQQFgoA\n" +
-    "HQUCYlFpQgQLCQcIAxUICgQWAAIBAhkBAhsDAh4BACEJEAU9zuPqrEipFiEE\n" +
-    "7+SgFCuKOMoeIbuFBT3O4+qsSKmPggD7BKB8fG0sqjoBLoq6kp2hLf95ZhJw\n" +
-    "eogOylaDek490bEBAKxO5DpaLZoP/ukWSJnKWvwnndr7jq2d1AfXSHarnecK\n" +
-    "x4sEYlFpQhIKKwYBBAGXVQEFAQEHQE3iTs1L4s7YvlbVTk8+Bfh7Ivl+jfET\n" +
-    "I7KGhGf3aYc6AwEIB/4JAwji77rV2agDweAhRt/dgpXhyv2OTOsqOe+Mh3NB\n" +
-    "zCbUZqLXfLW4DC2lPWF/aiDCrFBA9YNroBuH5MMp1O4CuTku/P9Si6KMLC8R\n" +
-    "YBIQiqFQwngEGBYIAAkFAmJRaUICGwwAIQkQBT3O4+qsSKkWIQTv5KAUK4o4\n" +
-    "yh4hu4UFPc7j6qxIqfkvAQCWPHvPYI8XEOgTygd1jg+lXd51GbxExSP0YCa/\n" +
-    "S9bHKAD/fddVBu2S8mNi+bjhjcjHnuRLgk+XP023HJ2XcqEDZAg=\n" +
-    "=JWLk\n" +
-    "-----END PGP PRIVATE KEY BLOCK-----\n"
-
-const privateKeySender = "-----BEGIN PGP PRIVATE KEY BLOCK-----\n" +
-    "\n" +
-    "xYYEYlFrJhYJKwYBBAHaRw8BAQdAKUSZv3i66/pdYCezNrBTW0Yt0gXqmARA\n" +
-    "dAB1r/JTh2P+CQMIIy+d7CAmyuDg6yFGdhxSviZold9mRVrMA8HlgRggLL2n\n" +
-    "FmGFA+JnWWjC+NmMcOzH/BVIbEThOZ9SPQsAcrQR/KkyrZpFp4CakKtItRN3\n" +
-    "Cs0lVmluY2ljIFRlc3QgPHNhc2EudmluY2ljMTZAZ21haWwuY29tPsKMBBAW\n" +
-    "CgAdBQJiUWsmBAsJBwgDFQgKBBYAAgECGQECGwMCHgEAIQkQW9/nPg97m4YW\n" +
-    "IQS94bTYNlnISlZ5itpb3+c+D3ubhpaeAP9rS8G+dOumaSbQhUWceH4Y0TM8\n" +
-    "PAgKQI+DY93GqVNGNQEAruD4AC+DsvAZdASZr9D7OU9dMBouyo0l7re8lGtU\n" +
-    "zAzHiwRiUWsmEgorBgEEAZdVAQUBAQdAEu3Nx3WWxXqk1NrlEosmyq0awqZ8\n" +
-    "zs6K/InExVaBOkADAQgH/gkDCElS4DZgRr5m4IQP/cs6u8IISfwpZ6S96d0+\n" +
-    "URUrAl8PrLjN4umc0cF1lC7UzEph4QP1rRFry2oGcvl/KZIThRi/puxX/7In\n" +
-    "s0MtEIf0H+/CeAQYFggACQUCYlFrJgIbDAAhCRBb3+c+D3ubhhYhBL3htNg2\n" +
-    "WchKVnmK2lvf5z4Pe5uGw+wBALvtbjQTM7s8LUwFKaREg66cAJyr52wEx/yc\n" +
-    "QgPiU6Y5AP9PlXCI4JXGgJz4UckNZWyFEByw0kZWtDCB5QT/i4vuAg==\n" +
-    "=t7uQ\n" +
-    "-----END PGP PRIVATE KEY BLOCK-----\n"
-
 app.use(bodyParser.json())
 
 app.post("/generateKey", async (req, res) => {
@@ -134,17 +97,13 @@ app.post('/decrypt', async (req, response) => {
     console.log(senderEmail);
 
     // poišče javni ključ v bazi
-    //try {
     let senderPublicKey = await axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(senderEmail))
-    //} catch (e) {
-    //console.log("Fetching public key error: ", e.message)
-    //}
     console.log(senderPublicKey.data)
 
     try {
         let decrypted = await decrypt(message, recipientPrivateKey, senderPublicKey.data, passphrase);
         console.log(decrypted)
-        response.json({decrypted: decrypted})
+        response.json(decrypted)
     } catch (e) {
         console.log("Decryption error: ", e.message)
         response.status(400).send(e.message)
@@ -185,27 +144,7 @@ async function decrypt(data, recipientPrivateKey, senderPublicKey, pass) {
     });
 
     // Za verificiranje podpisa
-    /*let armoredKey = '-----BEGIN PGP PUBLIC KEY BLOCK-----\n' +
-        'Comment: BDE1 B4D8 3659 C84A 5679  8ADA 5BDF E73E 0F7B 9B86\n' +
-        'Comment: Vincic Test <sasa.vincic16@gmail.com>\n' +
-        '\n' +
-        'xjMEYlFrJhYJKwYBBAHaRw8BAQdAKUSZv3i66/pdYCezNrBTW0Yt0gXqmARAdAB1\n' +
-        'r/JTh2PNJVZpbmNpYyBUZXN0IDxzYXNhLnZpbmNpYzE2QGdtYWlsLmNvbT7CjAQQ\n' +
-        'FgoAHQUCYlFrJgQLCQcIAxUICgQWAAIBAhkBAhsDAh4BACEJEFvf5z4Pe5uGFiEE\n' +
-        'veG02DZZyEpWeYraW9/nPg97m4aWngD/a0vBvnTrpmkm0IVFnHh+GNEzPDwICkCP\n' +
-        'g2PdxqlTRjUBAK7g+AAvg7LwGXQEma/Q+zlPXTAaLsqNJe63vJRrVMwMzjgEYlFr\n' +
-        'JhIKKwYBBAGXVQEFAQEHQBLtzcd1lsV6pNTa5RKLJsqtGsKmfM7OivyJxMVWgTpA\n' +
-        'AwEIB8J4BBgWCAAJBQJiUWsmAhsMACEJEFvf5z4Pe5uGFiEEveG02DZZyEpWeYra\n' +
-        'W9/nPg97m4bD7AEAu+1uNBMzuzwtTAUppESDrpwAnKvnbATH/JxCA+JTpjkA/0+V\n' +
-        'cIjglcaAnPhRyQ1lbIUQHLDSRla0MIHlBP+Li+4C\n' +
-        '=kTJk\n' +
-        '-----END PGP PUBLIC KEY BLOCK-----'*/
 
-
-    //console.log(armoredKey)
-
-    // public key posiljatelja (za verificireanje)
-    //console.log(senderPublicKey)
     const publicKey = await openpgp.readKey({armoredKey: senderPublicKey});
     // dekriptiranje
     const {data: decrypted, signatures} = await openpgp.decrypt({
@@ -214,16 +153,17 @@ async function decrypt(data, recipientPrivateKey, senderPublicKey, pass) {
         decryptionKeys: privateKey
     });
 
-    //console.log("dee ", decrypted)
-
+    /*let signer = await axios.get('https://keys.openpgp.org/vks/v1/by-email/' + )*/
+    let valid = true;
     // preveri skladnost podpisa
     try {
         await signatures[0].verified; // throws on invalid signature
         console.log('Signature is valid');
     } catch (e) {
+        valid = false
         throw new Error('Signature could not be verified: ' + e.message);
     }
-    return decrypted;
+    return {decrypted: decrypted, valid: valid};
 }
 
 async function getPublicKey(email) {
