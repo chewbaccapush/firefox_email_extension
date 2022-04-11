@@ -1,59 +1,59 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <meta charset="utf-8"/>
+  <head>
+    <meta charset="utf-8" />
 
-    <link rel="stylesheet" href="../globals.css"/>
-    <link rel="stylesheet" href="decrypt.css"/>
-</head>
+    <link rel="stylesheet" href="../globals.css" />
+    <link rel="stylesheet" href="decrypt.css" />
+  </head>
 
-<body>
-<div class="mainContainer">
-    <nav class="navigationWrapper">
+  <body>
+    <div class="mainContainer">
+      <nav class="navigationWrapper">
         <div class="logoWrapper">
-            <img id="logo" src="../../icons/fill-sign.png"/>
+          <img id="logo" src="../../icons/fill-sign.png" />
         </div>
         <div class="linkWrapper">
-            <ul class="navigation">
-                <li class="parent">
-                    <a class="link" href="../index/popupWindow.html">Keys</a>
-                </li>
-                <li class="parent">
-                    <a class="link" href="../Encrypt/encrypt.html">Encrypt</a>
-                </li>
-                <li class="parent">
-                    <a class="selectedLink" href="decrypt.html">Decrypt</a>
-                </li>
-            </ul>
+          <ul class="navigation">
+            <li class="parent">
+              <a class="link" href="../index/popupWindow.html">Keys</a>
+            </li>
+            <li class="parent">
+              <a class="link" href="../Encrypt/encrypt.html">Encrypt</a>
+            </li>
+            <li class="parent">
+              <a class="selectedLink" href="decrypt.html">Decrypt</a>
+            </li>
+          </ul>
         </div>
-    </nav>
+      </nav>
 
-    <div class="decryptContainer">
+      <div class="decryptContainer">
         <div class="selectContainer">
-            <div id="selectKeyContainer"></div>
+          <div id="selectKeyContainer"></div>
         </div>
         <div class="inputDecryptContainer">
-            <label id="labelInput">Message to decrypt: </label>
-            <textarea id="decryptMessage" type="text"></textarea>
+          <label id="labelInput">Message to decrypt: </label>
+          <textarea id="decryptMessage" type="text"></textarea>
         </div>
         <div class="inputContainer">
-            <label id="labelInput">Password</label>
-            <input id="decryptPassword" type="password"/>
+          <label id="labelInput">Password</label>
+          <input id="decryptPassword" type="password" />
         </div>
         <div class="inputContainer">
-            <label id="labelInput">Recipient email</label>
-            <input id="decryptEmail" type="text"/>
+          <label id="labelInput">Recipient email</label>
+          <input id="decryptEmail" type="text" />
         </div>
-        <div class="inputContainer">
-            <div class="buttonsContainer">
-                <button id="decryptButton">Decrypt</button>
-                <button id="copyButton">Copy</button>
-            </div>
+
+        <div class="buttonsContainer">
+          <button id="decryptButton">Decrypt</button>
+          <button id="copyButton">Copy</button>
         </div>
+
         <div id="download" class="inputContainer"></div>
+      </div>
     </div>
-</div>
-<script src="decrypt.js"></script>
-</body>
+    <script src="decrypt.js"></script>
+  </body>
 </html>

@@ -5,6 +5,7 @@
 }
 
 .buttonsContainer {
+    width: 80%;
     display: flex;
     justify-content: space-between;
 }
@@ -40,7 +41,7 @@
 }
 
 #decryptButton {
-    width: 45%;
+    width: 30%;
     font-size: 0.8rem;
     background-color:  white;
     border: 2px solid var(--primary-color);
@@ -57,7 +58,7 @@
 }
 
 #copyButton {
-    width: 20%;
+    width: 30%;
     font-size: 0.8rem;
     background-color:  white;
     border: 2px solid var(--primary-color);
