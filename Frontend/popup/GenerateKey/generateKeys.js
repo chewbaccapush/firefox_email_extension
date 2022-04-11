@@ -1,6 +1,8 @@
 window.onload = function() {
     let generateButton = document.getElementById('generateButton');
-   
+    let div = document.getElementById('alert');
+    div.style.display = "none";
+
     generateButton.addEventListener('click', function() {
         let email = document.getElementById('email').value;
         let password = document.getElementById('password').value;
@@ -26,6 +28,8 @@ async function generateKey(email, password, name) {
       });
       const content = await rawResponse.json();
 
+      let div = document.getElementById('alert');
+
       let storage = []; 
       if (localStorage.getItem(email) !== null) {
         storage = localStorage.getItem(email);
@@ -38,4 +42,6 @@ async function generateKey(email, password, name) {
         storage[0] = content.privateKey;
         localStorage.setItem(email, JSON.stringify(storage));
       }
+        
+      div.style.display = "block";
 }
