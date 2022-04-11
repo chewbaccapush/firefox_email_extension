@@ -44,6 +44,7 @@ async function decryptMessage(message, password, email) {
     console.log("dec ", content);
     document.getElementById("decryptMessage").value = content.decrypted;
     document.getElementById('copyButton').style.display = "block";
+    document.getElementById('alert').style.display = "block";
 }
 
 const copyToClipboard = () => {
