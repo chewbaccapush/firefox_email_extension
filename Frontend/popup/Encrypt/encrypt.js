@@ -5,6 +5,9 @@ window.onload = () => {
     let copyButton = document.getElementById("copyButton");
     copyButton.onclick = () => copyToClipboard();
 
+    let sendButton = document.getElementById("sendButton");
+    sendButton.onclick = () => sendMessage();
+
     generateKeysTable();
 }
 
@@ -60,4 +63,13 @@ const generateKeysTable = async() => {
 
     let div = document.getElementById("selectKeyContainer");
     div.appendChild(label).appendChild(select);
+}
+
+const sendMessage = () => {
+    console.log("sending")
+    var emailTo = document.getElementById('recipient').value;
+    var emailBody = document.getElementById('message').value;
+   /* document.location =  "https://mail.google.com/mail?view=cm&tf=0&to="+emailTo+"&body="+emailBody;*/
+    window.open("mailto:"+emailTo+"?subject=PGP&body="+encodeURIComponent(emailBody), '_blank');
+
 }

@@ -97,7 +97,10 @@ app.post('/decrypt', async (req, response) => {
     console.log(senderEmail);
 
     // poišče javni ključ v bazi
-    let senderPublicKey = await axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(senderEmail))
+
+
+        let senderPublicKey = await axios.get('https://keys.openpgp.org/vks/v1/by-email/' + encodeURIComponent(senderEmail))
+
     console.log(senderPublicKey.data)
 
     try {
