@@ -7,6 +7,10 @@ window.onload = function () {
         let email = document.getElementById('decryptEmail').value;
         decryptMessage(message, password, email);
     });
+
+    let copyButton = document.getElementById("copyButton");
+    copyButton.onclick = () => copyToClipboard();
+
     generateKeysTable();
 };
 
@@ -39,6 +43,13 @@ async function decryptMessage(message, password, email) {
     const content = await rawResponse.json();
     console.log("dec ", content);
     document.getElementById("decryptMessage").value = content.decrypted;
+    document.getElementById('copyButton').style.display = "block";
+}
+
+const copyToClipboard = () => {
+    let message = document.getElementById('decryptMessage').value;
+    navigator.clipboard.writeText(message);
+
 }
 
 const generateKeysTable = async () => {
