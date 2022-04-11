@@ -69,6 +69,7 @@
     cursor: pointer;
     margin-bottom: 1rem;
     display: none;
+    animation: fadein 0.5s;
 }
 
 #copyButton:hover {
@@ -81,4 +82,9 @@
     flex-direction: column;
     margin-bottom: 1rem;
     gap: 5px;
+}
+
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
