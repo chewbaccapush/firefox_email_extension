@@ -32,6 +32,7 @@ const encryptMessage = async() => {
 
       document.getElementById('message').value = content.encrypted;
       document.getElementById('copyButton').style.display = "block";
+      document.getElementById('sendButton').style.display = "block";
 }
 
 const copyToClipboard = () => {

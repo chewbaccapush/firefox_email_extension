@@ -94,7 +94,7 @@
     cursor: pointer;
     margin-bottom: 1rem;
     margin-left: 1rem;
-   
+    display: none;
     animation: fadein 0.5s;
 }
 
